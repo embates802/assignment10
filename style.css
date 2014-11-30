@@ -1,5 +1,4 @@
 nav {
-    margin: 5;
     font-family: "Futura";
     font-weight: 200;
     text-align: center;
@@ -33,7 +32,7 @@ body {
     background-color: #2c3e50;
     text-align: center;
     color: #f1c40f;
-    font-size: 16px;
+    font-size: 150%;
 }
 
 img.centered{
@@ -41,5 +40,3 @@ img.centered{
     margin-left: auto;
     margin-right: auto;
 }
-
-*/
