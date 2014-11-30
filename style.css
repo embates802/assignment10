@@ -1,12 +1,22 @@
-* {
+nav {
 	margin: 5;
-	font-family: "Helvetica";
-	font-weight: 100;
+	font-family: "Futura";
+	font-weight: 200;
         text-align: center;
+        letter-spacing: -0.1em; 
+        color: #7f8c8d;
+}
+
+nav a:link {
+    color: #27ae60;
+}
+
+nav a:hover {
+    color: #2ecc71;
 }
 
 body {
-	background-color: #AFC372;
+	background-color: #2c3e50;
 }
 
 */

@@ -9,9 +9,9 @@
         <link href="style.css" type="text/css" rel="stylesheet" />
     </head>
     <nav>
-        <ol>
-            <li><a href="about.php">ABOUT</a></li>
-            <li><a href="signup.php">SIGN UP</a></li>
-            <li><a href="feedback.php">FEEDBACK</a></li>
-        </ol>
+            <a href="about.php">ABOUT</a>
+            <?php print("  |  ") ?>
+            <a href="signup.php">SIGN UP</a>
+            <?php print("  |  ") ?>
+            <a href="feedback.php">FEEDBACK</a>
     </nav>
