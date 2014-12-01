@@ -3,6 +3,7 @@
     <h2>Sign Up For Our Newsletter</h2>
     <?php
     include "../bin/validation-functions.php";
+    include "../bin/mail-message.php";
     $debug = false;
     error_reporting(E_All);
     if (isset($_GET["debug"])) { // ONLY do this in a classroom environment
@@ -75,6 +76,12 @@
     // create array to hold error messages filled (if any) in 2d displayed in 3c.
     $errorMsg = array();
     
+    // used for building email message to be sent and displayed
+    $mailed = false;
+    $messageA = "";
+    $messageB = "";
+    $messageC = "";
+    
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     //
     // SECTION: 2 Process for when the form is submitted
@@ -141,14 +148,13 @@
             $cityERROR = true;
         }
         
+        if (!verifyAlpha($state)) {
+            $errorMsg[] = "Your state appears to have invalid characters.";
+            $stateERROR = true;
+        }        
         if (!verifyNumeric($zip)) {
             $errorMsg[] = "Your zip code appears to have invalid characters.";
             $zipERROR = true;
-        }
-        
-        if (!verifyAlpha($state)) {
-            $errorMsg[] = "Your state appears to have invalid characters.";
-            $cityERROR = true;
         }
         
         if (!verifyPhone($phoneNumber)) {
@@ -174,7 +180,7 @@
         $dataEntered = false;
         try {
             $thisDatabase->db->beginTransaction();
-            $query = 'INSERT INTO tblUser (pmkEmail, fldFirstName, fldLastName, fldAddress, fldCity, fldState, fldZip, fldPhoneNumber, fldFeatured, fldTips, fldLowCal) values (?, ?, ?, ?, ?, ?, ?, ?)';
+            $query = 'INSERT INTO tblUser (fldEmail, fldFirstName, fldLastName, fldAddress, fldCity, fldState, fldZip, fldPhoneNumber, fldFeatured, fldTips, fldLowCal) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
             $data = array($email, $firstName, $lastName, $address, $city, $state, $zip, $phoneNumber, $featured, $tips, $lowCal);
             if ($debug) {
                 print "<p>sql " . $query;
@@ -196,12 +202,50 @@
             $thisDatabase->db->rollback();
             if ($debug)
                 print "Error!: " . $e->getMessage() . "</br>";
-            $errorMsg[] = "There was a problem with accepting your data please contact us directly.";
+            $errorMsg[] = "There was a problem with accepting your data; please contact us directly.";
         }
         // If the transaction was successful, give success message
         if ($dataEntered) {
             if ($debug)
                 print "<p>data entered now prepare keys ";
+            
+//#################################################################
+            // create a key value for confirmation
+
+            $query = "SELECT fldLastName FROM tblUser WHERE pmkUserID=" . $primaryKey;
+            $results = $thisDatabase->select($query);
+            $dateSubmitted = $results[0]["fldLastName"];
+
+            $key1 = sha1($dateSubmitted);
+            $key2 = $primaryKey;
+
+            if ($debug)
+                print "<p>key 1: " . $key1;
+            if ($debug)
+                print "<p>key 2: " . $key2;
+
+            //#################################################################
+            //
+            //Put forms information into a variable to print on the screen
+            //
+
+            $messageA = '<h2>Thank you for registering.</h2>';
+
+            $messageB = "You are on our list! You should start receiving our emails within one business week.";
+
+            $messageC .= "<p><b>Email Address:</b><i>   " . $email . "</i></p>";
+            //##############################################################
+            //
+            // email the form's information
+            //
+            $to = $email; // the person who filled out the form
+            $cc = "";
+            $bcc = "";
+            $from = "Bottoms Up! <noreply@yoursite.com>";
+            $subject = "Welcome to the Bottoms Up! Newsletter";
+
+            $mailed = sendMail($to, $cc, $bcc, $from, $subject, $messageA . $messageB . $messageC);
+      
         }
     }
 }
@@ -222,8 +266,19 @@
 // If its the first time coming to the form or there are errors we are going
 // to display the form.
     if (isset($_POST["btnSubmit"]) AND empty($errorMsg)) { // closing of if marked with: end body submit
-        print "<h1>You are on our list!</h1>";
-        print "<h2>You should expect to start receiving emails from us within one business week.</h2>";
+        print "<h1>Your Request has ";
+        if (!$mailed) {
+            print "not ";
+        }
+        print "been processed</h1>";
+        print "<p>A copy of this message has ";
+        if (!$mailed) {
+            print "not ";
+        }
+        print "been sent</p>";
+        print "<p>To: " . $email . "</p>";
+        print "<p>Mail Message:</p>";
+        print $messageA . $messageC;
     } else {
         
                
@@ -268,7 +323,7 @@
                         <label for="txtEmail" class="required">Email:
                             <input type="text" id="txtEmail" name="txtEmail"
                                    value="<?php print $email; ?>"
-                                   tabindex="120" maxlength="45" placeholder="Enter your email address"
+                                   tabindex="120" maxlength="45"
                                    <?php if ($emailERROR) print 'class="mistake"'; ?>
                                    onfocus="this.select()"
                                    >
@@ -277,7 +332,7 @@
                         <label for="txtFirstName" class="required">First Name:
                             <input type="text" id="txtFirstName" name="txtFirstName"
                                    value="<?php print $firstName; ?>"
-                                   tabindex ="130" maxlength ="20" placeholder="Enter your first name"
+                                   tabindex ="130" maxlength ="20"
                                    <?php if ($firstNameERROR) print 'class="mistake"'; ?>
                                    onfocus ="this.select()"
                                    >
@@ -285,7 +340,7 @@
                         <label for="txtLastName" class="required">Last Name:
                             <input type="text" id="txtLastName" name="txtLastName"
                                    value="<?php print $lastName; ?>"
-                                   tabindex ="130" maxlength ="20" placeholder="Enter your last name"
+                                   tabindex ="130" maxlength ="20"
                                    <?php if ($lastNameERROR) print 'class="mistake"'; ?>
                                    onfocus ="this.select()"
                                    >
@@ -294,20 +349,46 @@
                         <label for="txtAddress" class="required">Address:
                             <input type="text" id="txtAddress" name="txtAddress"
                                    value="<?php print $address; ?>"
-                                   tabindex ="130" maxlength ="50" placeholder="Enter your address"
+                                   tabindex ="130" maxlength ="50"
                                    <?php if ($addressERROR) print 'class="mistake"'; ?>
                                    onfocus ="this.select()"
                                    >
                         </label>
                         <label for="txtCity" class="required">City:
                             <input type="text" id="txtCity" name="txtCity"
-                                   value="<?php print $address; ?>"
-                                   tabindex ="130" maxlength ="50" placeholder="Enter your address"
-                                   <?php if ($addressERROR) print 'class="mistake"'; ?>
+                                   value="<?php print $city; ?>"
+                                   tabindex ="130" maxlength ="50"
+                                   <?php if ($cityERROR) print 'class="mistake"'; ?>
                                    onfocus ="this.select()"
                                    >
                         </label>
-                        <p>
+                        <label for="txtState" class="required">State:
+                            <input type="text" id="txtState" name="txtState" size="4"
+                                   value="<?php print $state; ?>"
+                                   tabindex ="130" maxlength ="2"
+                                   <?php if ($stateERROR) print 'class="mistake"'; ?>
+                                   onfocus ="this.select()"
+                                   >
+                        </label>
+                        <label for="txtZip" class="required">Zip:
+                            <input type="text" id="txtZip" name="txtZip" size="8"
+                                   value="<?php print $zip; ?>"
+                                   tabindex ="130" maxlength ="2"
+                                   <?php if ($zipERROR) print 'class="mistake"'; ?>
+                                   onfocus ="this.select()"
+                                   >
+                        </label>
+                        <p>Please indicate what you would like to receive in your newsletter:</p>
+                        <label><input type="checkbox" id="chkFeatured" name="chkFeatured" value="featured"
+                              <?php if ($featured) print'checked';?>
+                              tabindex="321" >Featured Cocktails</label>
+                <label><input type="checkbox" id="chkTips" name="chkTips" value="tips"
+                              <?php if ($tips) print'checked';?>
+                              tabindex="323" >Party-Hosting Tips</label>
+                  <label><input type="checkbox" id="chkLowCal" name="chkLowCal" value="lowCal"
+                              <?php if ($lowCal) print'checked';?>
+                              tabindex="323" >Drinking Games</label>
+                        <p>    
                     <input type="submit" id="btnSubmit" name="btnSubmit" value="Sign Me Up!" tabindex="900" class="button">
         </form>
         <?php

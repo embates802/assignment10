@@ -166,7 +166,8 @@
     <figure>
     <img class="centered" src="photos/empty.jpg" alt="Empty Drinking Glass" title="Empty Glass"/>
     </figure>
-    }
+    <?php
+    }?>
     <?php
     $cocktailName = $results[0]["fldCocktailName"];
     $recipe = $results[0]["fldRecipe"];
