@@ -61,16 +61,17 @@
     //
     if (isset($_POST["btnSubmit"])) {
 
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-    //
-    // SECTION: 2a Security
-    // 
-    if (!securityCheck(true)) {
-        $msg = "<p>Sorry you cannot access this page. ";
-        $msg.= "Security breach detected and reported</p>";
-        die($msg);
-    }
+//    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+//    //
+//    // SECTION: 2a Security
+//    // 
+//    if (!securityCheck(true)) {
+//        $msg = "<p>Sorry you cannot access this page. ";
+//        $msg.= "Security breach detected and reported</p>";
+//        die($msg);
+//    }
     
+
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     //
     // SECTION: 2b Sanitize (clean) data 
@@ -78,7 +79,7 @@
     // form. Note it is best to follow the same order as declared in section 1c.
     $alcoholicBeverage = htmlentities($_POST["txtDepartment"], ENT_QUOTES, "UTF-8");
     $nonalcoholicBeverage = htmlentities($_POST["txtCourseNumber"], ENT_QUOTES, "UTF-8");
- 
+         
      //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     //
     // SECTION: 2c Validation
@@ -128,15 +129,22 @@
         
         $query .="
                 FROM
-                    tblCocktails";
+                    tblCocktails,
+                    tblAlcoholicBeverages,
+                    tblNonalcoholicBeverages";
         
        $query .=" WHERE pmkABeverageID = fnkABeverageID";
        $query .=" AND pmkNBeverageID = fnkNBeverageID";
+       $query .=" AND fldABeverageName like ?";
+       $query .=" AND fldNBeverageName like ?";
        
        $data = array($alcoholicBeverage, $nonalcoholicBeverage);
                 
                 
         $results = $thisDatabase->select($query, $data);
+        
+        print($query);
+        print($data);
      
         /* ##### Step four
      * prepare output and loop through array
@@ -149,9 +157,6 @@
     </script>
     <aside class="resetButton">
       <button id ="btnReset" onclick="resetForm();">Start Over</button>  
-    </aside>
-    <aside id="backToTop">
-        <a href="#form">Top</a>
     </aside>
     
             <?php
