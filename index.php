@@ -168,35 +168,25 @@
     </figure>
     <?php
     }?>
-    <h2>You should make a</h2>
+    <h2>You should make: </h2>
     <?php
-    print "<table>";
-    $firstTime = true;
-    /* since it is associative array display the field names */
-    foreach ($results as $row) {
-//        if ($firstTime) {
-//            print "<thead><tr>";
-//            $keys = array_keys($row);
-//            foreach ($keys as $key) {
-//                if (!is_int($key)) {
-//                    print "<th>" . $key . "</th>";
-//                }
-//            }
-//            print "</tr>";
-//            $firstTime = false;
-//        }
-        
-        /* display the data, the array is both associative and index so we are
-         *  skipping the index otherwise records are doubled up */
-        print "<tr>";
-        foreach ($row as $field => $value) {
-            if (!is_int($field)) {
-                print "<td>" . $value . "</td>";
-            }
-        }
-        print "</tr>";
+    $cocktailName = $results[0]["fldCocktailName"];
+    $recipe = $results[0]["fldRecipe"];
+    $specialInstructions = $results[0]["fldSpecialInstructions"];
+    $photoName = $results[0]["fldPhotoName"];
+    ?>
+   <?php
+    print("<h2>".$cocktailName."</h2>");
+    print('<img class = "centered" src="' . $photoName . '"/>');
+    print('Recipe: <br>' . $recipe);
+    
+    if ($specialInstructions != "none")
+    {
+        print($specialInstructions);
     }
-    print "</table>";
+ 
+    $firstTime = true;
+   
     
      } else {
         //####################################

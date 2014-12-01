@@ -42,6 +42,9 @@
     $firstName = "";
     $lastName = "";
     $address = "";
+    $city = "";
+    $state = "";
+    $zip = "";
     $phoneNumber = "";
     $featured = 0;
     $tips = 0;
@@ -57,6 +60,9 @@
     $firstNameERROR = false;
     $lastNameERROR = false;
     $addressERROR = false;
+    $cityERROR = false;
+    $stateERROR = false;
+    $zipERROR = false;
     $phoneNumberERROR = false;
     $featuredERROR = false;
     $tipsERROR = false;
@@ -84,6 +90,9 @@
         $firstName = filter_var($_POST["txtFirstName"], FILTER_SANITIZE_STRING);
         $lastName = filter_var($_POST["txtLastName"], FILTER_SANITIZE_STRING);
         $address = filter_var($_POST["txtAddress"], FILTER_SANITIZE_STRING);
+        $city = filter_var($_POST["txtCity"], FILTER_SANITIZE_STRING);
+        $state = filter_var($_POST["txtState"], FILTER_SANITIZE_STRING);
+        $zip = filter_var($_POST["txtzip"], FILTER_SANITIZE_STRING);
         $phoneNumber = filter_var($_POST["txtPhoneNumber"], FILTER_SANITIZE_STRING);
         
         //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -127,6 +136,21 @@
             $addressERROR = true;
         }
         
+        if (!verifyAlpha($city)) {
+            $errorMsg[] = "Your city appears to have invalid characters.";
+            $cityERROR = true;
+        }
+        
+        if (!verifyNumeric($zip)) {
+            $errorMsg[] = "Your zip code appears to have invalid characters.";
+            $zipERROR = true;
+        }
+        
+        if (!verifyAlpha($state)) {
+            $errorMsg[] = "Your state appears to have invalid characters.";
+            $cityERROR = true;
+        }
+        
         if (!verifyPhone($phoneNumber)) {
             $errorMsg[] = "Your phone number is not in the correct format.";
             $phoneERROR = true;
@@ -150,8 +174,8 @@
         $dataEntered = false;
         try {
             $thisDatabase->db->beginTransaction();
-            $query = 'INSERT INTO tblUser (pmkEmail, fldFirstName, fldLastName, fldAddress, fldPhoneNumber, fldFeatured, fldTips, fldLowCal) values (?, ?, ?, ?, ?, ?, ?, ?)';
-            $data = array($email, $firstName, $lastName, $address, $phoneNumber, $featured, $tips, $lowCal);
+            $query = 'INSERT INTO tblUser (pmkEmail, fldFirstName, fldLastName, fldAddress, fldCity, fldState, fldZip, fldPhoneNumber, fldFeatured, fldTips, fldLowCal) values (?, ?, ?, ?, ?, ?, ?, ?)';
+            $data = array($email, $firstName, $lastName, $address, $city, $state, $zip, $phoneNumber, $featured, $tips, $lowCal);
             if ($debug) {
                 print "<p>sql " . $query;
                 print"<p><pre>";
@@ -249,15 +273,41 @@
                                    onfocus="this.select()"
                                    >
                         </label>
-                        <p>
-                        <label for="txtFirstName" class="required">Name:
+                        <br>
+                        <label for="txtFirstName" class="required">First Name:
                             <input type="text" id="txtFirstName" name="txtFirstName"
                                    value="<?php print $firstName; ?>"
-                                   tabindex ="130" maxlength ="45" placeholder="Enter your first name"
+                                   tabindex ="130" maxlength ="20" placeholder="Enter your first name"
                                    <?php if ($firstNameERROR) print 'class="mistake"'; ?>
                                    onfocus ="this.select()"
                                    >
-                            <p></p>
+                        </label>
+                        <label for="txtLastName" class="required">Last Name:
+                            <input type="text" id="txtLastName" name="txtLastName"
+                                   value="<?php print $lastName; ?>"
+                                   tabindex ="130" maxlength ="20" placeholder="Enter your last name"
+                                   <?php if ($lastNameERROR) print 'class="mistake"'; ?>
+                                   onfocus ="this.select()"
+                                   >
+                        </label>
+                        <br>
+                        <label for="txtAddress" class="required">Address:
+                            <input type="text" id="txtAddress" name="txtAddress"
+                                   value="<?php print $address; ?>"
+                                   tabindex ="130" maxlength ="50" placeholder="Enter your address"
+                                   <?php if ($addressERROR) print 'class="mistake"'; ?>
+                                   onfocus ="this.select()"
+                                   >
+                        </label>
+                        <label for="txtCity" class="required">City:
+                            <input type="text" id="txtCity" name="txtCity"
+                                   value="<?php print $address; ?>"
+                                   tabindex ="130" maxlength ="50" placeholder="Enter your address"
+                                   <?php if ($addressERROR) print 'class="mistake"'; ?>
+                                   onfocus ="this.select()"
+                                   >
+                        </label>
+                        <p>
                     <input type="submit" id="btnSubmit" name="btnSubmit" value="Sign Me Up!" tabindex="900" class="button">
         </form>
         <?php
