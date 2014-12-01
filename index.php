@@ -77,9 +77,9 @@
     // SECTION: 2b Sanitize (clean) data 
     // remove any potential JavaScript or html code from users input on the
     // form. Note it is best to follow the same order as declared in section 1c.
-    $alcoholicBeverage = htmlentities($_POST["txtDepartment"], ENT_QUOTES, "UTF-8");
-    $nonalcoholicBeverage = htmlentities($_POST["txtCourseNumber"], ENT_QUOTES, "UTF-8");
-         
+    $alcoholicBeverage = htmlentities($_POST["lstAlcoholicBeverages"], ENT_QUOTES, "UTF-8");
+    $nonalcoholicBeverage = htmlentities($_POST["lstNonalcoholicBeverages"], ENT_QUOTES, "UTF-8");
+    
      //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     //
     // SECTION: 2c Validation
@@ -121,11 +121,11 @@
     if (isset($_POST["btnSubmit"]) AND empty($errorMsg)) { // closing of if marked with: end body submit
         
         $query ="
-                Select 
-                    fldCocktailName AS Cocktail Name, 
-                    fldRecipe as Recipe, 
-                    fldSpecialInstructions as Notes,
-                    fldPhotoName as Photo Path";
+                SELECT
+                    tblCocktails.fldCocktailName, 
+                    tblCocktails.fldRecipe, 
+                    tblCocktails.fldSpecialInstructions,
+                    tblCocktails.fldPhotoName";
         
         $query .="
                 FROM
@@ -133,18 +133,17 @@
                     tblAlcoholicBeverages,
                     tblNonalcoholicBeverages";
         
-       $query .=" WHERE pmkABeverageID = fnkABeverageID";
-       $query .=" AND pmkNBeverageID = fnkNBeverageID";
-       $query .=" AND fldABeverageName like ?";
-       $query .=" AND fldNBeverageName like ?";
+        $query .=" WHERE tblAlcoholicBeverages.pmkABeverageID = tblCocktails.fnkABeverageID";
+        $query .=" AND tblNonalcoholicBeverages.pmkNBeverageID = tblCocktails.fnkNBeverageID";
+        $query .=" AND tblAlcoholicBeverages.fldABeverageName like ?";
+        $query .=" AND tblNonalcoholicBeverages.fldNBeverageName like ?";        
+
+
        
        $data = array($alcoholicBeverage, $nonalcoholicBeverage);
                 
                 
         $results = $thisDatabase->select($query, $data);
-        
-        print($query);
-        print($data);
      
         /* ##### Step four
      * prepare output and loop through array
@@ -170,17 +169,17 @@
     $firstTime = true;
     /* since it is associative array display the field names */
     foreach ($results as $row) {
-        if ($firstTime) {
-            print "<thead><tr>";
-            $keys = array_keys($row);
-            foreach ($keys as $key) {
-                if (!is_int($key)) {
-                    print "<th>" . $key . "</th>";
-                }
-            }
-            print "</tr>";
-            $firstTime = false;
-        }
+//        if ($firstTime) {
+//            print "<thead><tr>";
+//            $keys = array_keys($row);
+//            foreach ($keys as $key) {
+//                if (!is_int($key)) {
+//                    print "<th>" . $key . "</th>";
+//                }
+//            }
+//            print "</tr>";
+//            $firstTime = false;
+//        }
         
         /* display the data, the array is both associative and index so we are
          *  skipping the index otherwise records are doubled up */
