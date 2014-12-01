@@ -15,4 +15,6 @@
             <a href="signup.php">SIGN UP</a>
             <?php print("  |  ") ?>
             <a href="feedback.php">FEEDBACK</a>
+            <?php print("  |  ") ?>
+            <a href="login.php">LOGIN</a>
     </nav>
