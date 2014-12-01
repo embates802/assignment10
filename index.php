@@ -148,7 +148,7 @@
         }
     </script>
     <aside class="resetButton">
-      <button  id ="btnReset" onclick="resetForm();">Start Over</button>  
+      <button id ="btnReset" onclick="resetForm();">Start Over</button>  
     </aside>
     <aside id="backToTop">
         <a href="#form">Top</a>
@@ -226,9 +226,6 @@
         
          <form action="<?php print $phpSelf ;?>" method="post" id="frmRegister">
 
-            <fieldset class="wrapper">
-
-                <fieldset class="wrapperTwo">
                 <section class="fldInput">
                         <?php
                          $alcoholicSearch = "SELECT DISTINCT fldABeverageName FROM tblAlcoholicBeverages ORDER BY fldABeverageName ASC";
@@ -240,13 +237,12 @@
                                     name=\"lstAlcoholicBeverages\"
                                     tabindex=\"300\" >";
                          
-//                         print "<option value=\"%\"> All Buildings</option>";
-//                         for ($row = 1; $row < count($buildingList); $row++) {
-//                              for ($col = 0; $col < 1; $col++) {
-//                                echo "<option value=\"".$buildingList[$row][$col]."\">".$buildingList[$row][$col]."</option>\n";
-//                              }
-//                              
-//                        }
+                         for ($row = 1; $row < count($alcoholicList); $row++) {
+                              for ($col = 0; $col < 1; $col++) {
+                                echo "<option value=\"".$alcoholicList[$row][$col]."\">".$alcoholicList[$row][$col]."</option>\n";
+                              }
+                              
+                        }
                             
                             print "</select>\n ";
                           print"</section>\n";
@@ -266,26 +262,21 @@
                                     name=\"lstNonalcoholicBeverages\"
                                     tabindex=\"300\" >";
                          
-//                         print "<option value=\"%\"> All Buildings</option>";
-//                         for ($row = 1; $row < count($buildingList); $row++) {
-//                              for ($col = 0; $col < 1; $col++) {
-//                                echo "<option value=\"".$buildingList[$row][$col]."\">".$buildingList[$row][$col]."</option>\n";
-//                              }
-//                              
-//                        }
+                         for ($row = 1; $row < count($nonalcoholicList); $row++) {
+                              for ($col = 0; $col < 1; $col++) {
+                                echo "<option value=\"".$nonalcoholicList[$row][$col]."\">".$nonalcoholicList[$row][$col]."</option>\n";
+                              }
+                              
+                       }
                             
                             print "</select>\n ";
                           print"</section>\n";
                                                 
                          ?>
                        </section>
-                    </fieldset> <!-- ends wrapper Two -->
                 
-                <fieldset class="buttons">
-                    <input type="submit" id="btnSubmit" name="btnSubmit" value="Search" tabindex="10000" class="button">
-                </fieldset> <!-- ends buttons -->
-                
-            </fieldset> <!-- Ends Wrapper -->
+             <input type="submit" id="btnSubmit" name="btnSubmit" value="Bottoms Up!" tabindex="10000" class="button">
+
         </form>
     <?php
     } // end body submit
