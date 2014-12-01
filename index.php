@@ -162,9 +162,14 @@
             
    if( empty( $results ) )
     {
-     print ("Whoops! We couldn't find any cocktails with those ingredients. Why don't you try again?");
-    }
-    
+     print ("\nWhoops! We couldn't find any cocktails with those ingredients. Why don't you try again?");?>
+    <figure>
+    <img class="centered" src="photos/empty.jpg" alt="Empty Drinking Glass" title="Empty Glass"/>
+    </figure>
+    <?php
+    }?>
+    <h2>You should make a</h2>
+    <?php
     print "<table>";
     $firstTime = true;
     /* since it is associative array display the field names */
