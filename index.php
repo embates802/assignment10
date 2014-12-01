@@ -162,13 +162,11 @@
             
    if( empty( $results ) )
     {
-     print ("\nWhoops! We couldn't find any cocktails with those ingredients. Why don't you try again?");?>
+     print ("<p>Whoops! We couldn't find any cocktails with those ingredients. Why don't you try again?");?>
     <figure>
     <img class="centered" src="photos/empty.jpg" alt="Empty Drinking Glass" title="Empty Glass"/>
     </figure>
-    <?php
-    }?>
-    <h2>You should make: </h2>
+    }
     <?php
     $cocktailName = $results[0]["fldCocktailName"];
     $recipe = $results[0]["fldRecipe"];
@@ -176,14 +174,20 @@
     $photoName = $results[0]["fldPhotoName"];
     ?>
    <?php
-    print("<h2>".$cocktailName."</h2>");
-    print('<img class = "centered" src="' . $photoName . '"/>');
-    print('Recipe: <br>' . $recipe);
-    
-    if ($specialInstructions != "none")
+    if ($cocktailName != "")
     {
-        print($specialInstructions);
+        print("<h2>You should make: </h2>");
+        print("<h3>".$cocktailName."</h3>");
+        print('<img class = "centered" src="' . $photoName . '"/>');
+        print('<br>Recipe: <br>' . $recipe);
+            if ($specialInstructions != "none")
+            {
+                print('<p>'.$specialInstructions);
+            }   
+        
     }
+  
+
  
     $firstTime = true;
    
@@ -236,7 +240,7 @@
                                     name=\"lstAlcoholicBeverages\"
                                     tabindex=\"300\" >";
                          
-                         for ($row = 1; $row < count($alcoholicList); $row++) {
+                         for ($row = 0; $row < count($alcoholicList); $row++) {
                               for ($col = 0; $col < 1; $col++) {
                                 echo "<option value=\"".$alcoholicList[$row][$col]."\">".$alcoholicList[$row][$col]."</option>\n";
                               }
@@ -261,7 +265,7 @@
                                     name=\"lstNonalcoholicBeverages\"
                                     tabindex=\"300\" >";
                          
-                         for ($row = 1; $row < count($nonalcoholicList); $row++) {
+                         for ($row = 0; $row < count($nonalcoholicList); $row++) {
                               for ($col = 0; $col < 1; $col++) {
                                 echo "<option value=\"".$nonalcoholicList[$row][$col]."\">".$nonalcoholicList[$row][$col]."</option>\n";
                               }
