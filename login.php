@@ -44,6 +44,8 @@ if (isset($_POST["btnLogin"])) {
     //the user name that was taken from the form.
     try {
         if (empty($errorMsg)) {
+            print($username);
+            print($password);
             $data = array();
             $data[] = $username;
             $thisDatabase->db->beginTransaction();
