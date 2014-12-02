@@ -180,7 +180,7 @@
         $dataEntered = false;
         try {
             $thisDatabase->db->beginTransaction();
-            $query = 'INSERT INTO tblUser (fldEmail, fldFirstName, fldLastName, fldAddress, fldCity, fldState, fldZip, fldPhoneNumber, fldFeatured, fldTips, fldLowCal) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+            $query = "INSERT INTO tblUser (fldEmail, fldFirstName, fldLastName, fldAddress, fldCity, fldState, fldZip, fldPhoneNumber, fldFeatured, fldTips, fldLowCal) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $data = array($email, $firstName, $lastName, $address, $city, $state, $zip, $phoneNumber, $featured, $tips, $lowCal);
 //            if ($debug) {
 //                print "<p>sql " . $query;
@@ -188,14 +188,19 @@
 //                print_r($data);
 //                print"</pre></p>";
 //            }
+            print_r($data);
+            print($query);
             $results = $thisDatabase->insert($query, $data);
+            print("1");
 
             $primaryKey = $thisDatabase->lastInsert();
+            print("2");
 //            if ($debug)
 //                print "<p>pmk= " . $primaryKey;
             // all sql statements are done so lets commit to our changes
             $dataEntered = $thisDatabase->db->commit();
             $dataEntered = true;
+            print("3");
 //            if ($debug)
 //                print "<p>transaction complete ";
         } catch (PDOExecption $e) {
@@ -205,6 +210,7 @@
             $errorMsg[] = "There was a problem with accepting your data; please contact us directly.";
         }
         // If the transaction was successful, give success message
+        print("4");
         if ($dataEntered) {
 //            if ($debug)
 //                print "<p>data entered now prepare keys ";
@@ -215,10 +221,10 @@
             $query = "SELECT fldLastName FROM tblUser WHERE pmkUserID=" . $primaryKey;
             $results = $thisDatabase->select($query);
             $dateSubmitted = $results[0]["fldLastName"];
-
+            print("5");
             $key1 = sha1($dateSubmitted);
             $key2 = $primaryKey;
-
+            print("6");
 //            if ($debug)
 //                print "<p>key 1: " . $key1;
 //            if ($debug)
@@ -238,12 +244,13 @@
             //
             // email the form's information
             //
+            print("7");
             $to = $email; // the person who filled out the form
             $cc = "";
             $bcc = "";
             $from = "Bottoms Up! <noreply@yoursite.com>";
             $subject = "Welcome to the Bottoms Up! Newsletter";
-
+            print("8");
             $mailed = sendMail($to, $cc, $bcc, $from, $subject, $messageA . $messageB . $messageC);
       
         }
