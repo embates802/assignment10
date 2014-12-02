@@ -102,65 +102,66 @@
         $zip = filter_var($_POST["txtZip"], FILTER_SANITIZE_STRING);
         $phoneNumber = filter_var($_POST["txtPhoneNumber"], FILTER_SANITIZE_STRING);
         
-        //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-    //
-    // SECTION: 2c Validation
-    //
-    // Validation section. Check each value for possible errors, empty or
-    // not what we expect. You will need an IF block for each element you will
-    // check (see above section 1c and 1d). The if blocks should also be in the
-    // order that the elements appear on your form so that the error messages
-    // will be in the order they appear. errorMsg will be displayed on the form
-    // see section 3b. The error flag ($emailERROR) will be used in section 3c.
-
-
-        if ($email == "") {
-            $errorMsg[] = "Please enter your email address.";
-            $emailERROR = true;
-        } elseif (!verifyEmail($email)) {
-            $errorMsg[] = "Your email address appears to be incorrect.";
-            $emailERROR = true;
-        }
         
-        if ($firstName == ""){
-            $errorMsg[] = "Please enter your first name.";
-            $firstNameERROR = true;
-        } elseif (!verifyAlphaNum($firstName)) {
-            $errorMsg[] = "Your first name appears to have invalid characters.";
-            $firstNameERROR = true;
-        }
-        
-        if ($lastName == ""){
-            $errorMsg[] = "Please enter your last name.";
-            $lastNameERROR = true;
-        } elseif (!verifyAlphaNum($lastName)) {
-            $errorMsg[] = "Your last name appears to have invalid characters.";
-            $lastNameERROR = true;
-        }
-        
-        if (!verifyAlphaNum($address)) {
-            $errorMsg[] = "Your address appears to have invalid characters.";
-            $addressERROR = true;
-        }
-        
-        if (!verifyAlpha($city)) {
-            $errorMsg[] = "Your city appears to have invalid characters.";
-            $cityERROR = true;
-        }
-        
-        if (!verifyAlpha($state)) {
-            $errorMsg[] = "Your state appears to have invalid characters.";
-            $stateERROR = true;
-        }        
-        if (!verifyNumeric($zip)) {
-            $errorMsg[] = "Your zip code appears to have invalid characters.";
-            $zipERROR = true;
-        }
-        
-        if (!verifyPhone($phoneNumber)) {
-            $errorMsg[] = "Your phone number is not in the correct format.";
-            $phoneERROR = true;
-        }
+//        //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+//    //
+//    // SECTION: 2c Validation
+//    //
+//    // Validation section. Check each value for possible errors, empty or
+//    // not what we expect. You will need an IF block for each element you will
+//    // check (see above section 1c and 1d). The if blocks should also be in the
+//    // order that the elements appear on your form so that the error messages
+//    // will be in the order they appear. errorMsg will be displayed on the form
+//    // see section 3b. The error flag ($emailERROR) will be used in section 3c.
+//
+//
+//        if ($email == "") {
+//            $errorMsg[] = "Please enter your email address.";
+//            $emailERROR = true;
+//        } elseif (!verifyEmail($email)) {
+//            $errorMsg[] = "Your email address appears to be incorrect.";
+//            $emailERROR = true;
+//        }
+//        
+//        if ($firstName == ""){
+//            $errorMsg[] = "Please enter your first name.";
+//            $firstNameERROR = true;
+//        } elseif (!verifyAlphaNum($firstName)) {
+//            $errorMsg[] = "Your first name appears to have invalid characters.";
+//            $firstNameERROR = true;
+//        }
+//        
+//        if ($lastName == ""){
+//            $errorMsg[] = "Please enter your last name.";
+//            $lastNameERROR = true;
+//        } elseif (!verifyAlphaNum($lastName)) {
+//            $errorMsg[] = "Your last name appears to have invalid characters.";
+//            $lastNameERROR = true;
+//        }
+//        
+//        if (!verifyAlphaNum($address)) {
+//            $errorMsg[] = "Your address appears to have invalid characters.";
+//            $addressERROR = true;
+//        }
+//        
+//        if (!verifyAlpha($city)) {
+//            $errorMsg[] = "Your city appears to have invalid characters.";
+//            $cityERROR = true;
+//        }
+//        
+//        if (!verifyAlpha($state)) {
+//            $errorMsg[] = "Your state appears to have invalid characters.";
+//            $stateERROR = true;
+//        }        
+//        if (!verifyNumeric($zip)) {
+//            $errorMsg[] = "Your zip code appears to have invalid characters.";
+//            $zipERROR = true;
+//        }
+//        
+//        if (!verifyPhone($phoneNumber)) {
+//            $errorMsg[] = "Your phone number is not in the correct format.";
+//            $phoneERROR = true;
+//        }
         
         //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         //
@@ -176,6 +177,7 @@
         //
         // SECTION: 2e Save Data
         //
+        
         $primaryKey = "";
         $dataEntered = false;
         try {
@@ -198,6 +200,9 @@
             $dataEntered = true;
 //            if ($debug)
 //                print "<p>transaction complete ";
+            print_r($data."<p>");
+            print($query."<p>");
+            print_r($results);
         } catch (PDOExecption $e) {
             $thisDatabase->db->rollback();
 //            if ($debug)
