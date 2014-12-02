@@ -2,8 +2,8 @@
 <body>
     <h2>Sign Up For Our Newsletter</h2>
     <?php
-    include "../bin/validation-functions.php";
-    include "../bin/mail-message.php";
+    include("../bin/validation-functions.php");
+    include("../bin/mail-message.php");
 //    $debug = false;
     error_reporting(E_All);
 //    if (isset($_GET["debug"])) { // ONLY do this in a classroom environment
@@ -218,13 +218,13 @@
 //#################################################################
             // create a key value for confirmation
 
-            $query = "SELECT fldLastName FROM tblUser WHERE pmkUserID=" . $primaryKey;
-            $results = $thisDatabase->select($query);
-            $dateSubmitted = $results[0]["fldLastName"];
-            print("5");
-            $key1 = sha1($dateSubmitted);
-            $key2 = $primaryKey;
-            print("6");
+//            $query = "SELECT fldLastName FROM tblUser WHERE pmkUserID=" . $primaryKey;
+//            $results = $thisDatabase->select($query);
+//            $dateSubmitted = $results[0]["fldLastName"];
+//            print("5");
+//            $key1 = sha1($dateSubmitted);
+//            $key2 = $primaryKey;
+//            print("6");
 //            if ($debug)
 //                print "<p>key 1: " . $key1;
 //            if ($debug)
