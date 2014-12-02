@@ -1,9 +1,9 @@
-<?php require("head.php");?>
+<?php require("head.php");
+require("../bin/mail-message.php");?>
 <body>
     <h2>Sign Up For Our Newsletter</h2>
     <?php
     include("../bin/validation-functions.php");
-    include("../bin/mail-message.php");
 //    $debug = false;
     error_reporting(E_All);
 //    if (isset($_GET["debug"])) { // ONLY do this in a classroom environment
@@ -188,19 +188,14 @@
 //                print_r($data);
 //                print"</pre></p>";
 //            }
-            print_r($data);
-            print($query);
             $results = $thisDatabase->insert($query, $data);
-            print("1");
 
             $primaryKey = $thisDatabase->lastInsert();
-            print("2");
 //            if ($debug)
 //                print "<p>pmk= " . $primaryKey;
             // all sql statements are done so lets commit to our changes
             $dataEntered = $thisDatabase->db->commit();
             $dataEntered = true;
-            print("3");
 //            if ($debug)
 //                print "<p>transaction complete ";
         } catch (PDOExecption $e) {
@@ -210,47 +205,30 @@
             $errorMsg[] = "There was a problem with accepting your data; please contact us directly.";
         }
         // If the transaction was successful, give success message
-        print("4");
         if ($dataEntered) {
 //            if ($debug)
 //                print "<p>data entered now prepare keys ";
             
-//#################################################################
-            // create a key value for confirmation
-
-//            $query = "SELECT fldLastName FROM tblUser WHERE pmkUserID=" . $primaryKey;
-//            $results = $thisDatabase->select($query);
-//            $dateSubmitted = $results[0]["fldLastName"];
-//            print("5");
-//            $key1 = sha1($dateSubmitted);
-//            $key2 = $primaryKey;
-//            print("6");
-//            if ($debug)
-//                print "<p>key 1: " . $key1;
-//            if ($debug)
-//                print "<p>key 2: " . $key2;
 
             //#################################################################
             //
             //Put forms information into a variable to print on the screen
             //
 
-            $messageA = '<h2>Thank you for registering.</h2>';
+            $messageA = "You are on our list! ";
 
-            $messageB = "You are on our list! You should start receiving our emails within one business week.";
+            $messageB = "You should start receiving our emails within one business week.";
 
             $messageC .= "<p><b>Email Address:</b><i>   " . $email . "</i></p>";
             //##############################################################
             //
             // email the form's information
             //
-            print("7");
             $to = $email; // the person who filled out the form
             $cc = "";
             $bcc = "";
             $from = "Bottoms Up! <noreply@yoursite.com>";
             $subject = "Welcome to the Bottoms Up! Newsletter";
-            print("8");
             $mailed = sendMail($to, $cc, $bcc, $from, $subject, $messageA . $messageB . $messageC);
       
         }
@@ -273,19 +251,19 @@
 // If its the first time coming to the form or there are errors we are going
 // to display the form.
     if (isset($_POST["btnSubmit"]) AND empty($errorMsg)) { // closing of if marked with: end body submit
-        print "<h1>Your Request has ";
+        print "<h2>Your Request has ";
         if (!$mailed) {
             print "not ";
         }
-        print "been processed</h1>";
-        print "<p>A copy of this message has ";
-        if (!$mailed) {
-            print "not ";
-        }
-        print "been sent</p>";
-        print "<p>To: " . $email . "</p>";
-        print "<p>Mail Message:</p>";
-        print $messageA . $messageC;
+        print "been processed.</h2>";
+//        print "<p>A copy of this message has ";
+//        if (!$mailed) {
+//            print "not ";
+//        }
+//        print "been sent</p>";
+//        print "<p>To: " . $email . "</p>";
+//        print "<p>Mail Message:</p>";
+//        print $messageA . $messageC;
     } else {
         
                
