@@ -4,13 +4,13 @@
     <?php
     include "../bin/validation-functions.php";
     include "../bin/mail-message.php";
-    $debug = false;
+//    $debug = false;
     error_reporting(E_All);
-    if (isset($_GET["debug"])) { // ONLY do this in a classroom environment
-        $debug = true;
-    }
-    if ($debug)
-        print "<p>DEBUG MODE IS ON</p>";
+//    if (isset($_GET["debug"])) { // ONLY do this in a classroom environment
+//        $debug = true;
+//    }
+//    if ($debug)
+//        print "<p>DEBUG MODE IS ON</p>";
     
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     
@@ -99,7 +99,7 @@
         $address = filter_var($_POST["txtAddress"], FILTER_SANITIZE_STRING);
         $city = filter_var($_POST["txtCity"], FILTER_SANITIZE_STRING);
         $state = filter_var($_POST["txtState"], FILTER_SANITIZE_STRING);
-        $zip = filter_var($_POST["txtzip"], FILTER_SANITIZE_STRING);
+        $zip = filter_var($_POST["txtZip"], FILTER_SANITIZE_STRING);
         $phoneNumber = filter_var($_POST["txtPhoneNumber"], FILTER_SANITIZE_STRING);
         
         //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -169,8 +169,8 @@
         // Process for when the form passes validation (the errorMsg array is empty)
         //
         if (!$errorMsg) {
-            if ($debug)
-                print "<p>Form is valid</p>";
+//            if ($debug)
+//                print "<p>Form is valid</p>";
     
         //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         //
@@ -182,32 +182,32 @@
             $thisDatabase->db->beginTransaction();
             $query = 'INSERT INTO tblUser (fldEmail, fldFirstName, fldLastName, fldAddress, fldCity, fldState, fldZip, fldPhoneNumber, fldFeatured, fldTips, fldLowCal) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
             $data = array($email, $firstName, $lastName, $address, $city, $state, $zip, $phoneNumber, $featured, $tips, $lowCal);
-            if ($debug) {
-                print "<p>sql " . $query;
-                print"<p><pre>";
-                print_r($data);
-                print"</pre></p>";
-            }
+//            if ($debug) {
+//                print "<p>sql " . $query;
+//                print"<p><pre>";
+//                print_r($data);
+//                print"</pre></p>";
+//            }
             $results = $thisDatabase->insert($query, $data);
 
             $primaryKey = $thisDatabase->lastInsert();
-            if ($debug)
-                print "<p>pmk= " . $primaryKey;
+//            if ($debug)
+//                print "<p>pmk= " . $primaryKey;
             // all sql statements are done so lets commit to our changes
             $dataEntered = $thisDatabase->db->commit();
             $dataEntered = true;
-            if ($debug)
-                print "<p>transaction complete ";
+//            if ($debug)
+//                print "<p>transaction complete ";
         } catch (PDOExecption $e) {
             $thisDatabase->db->rollback();
-            if ($debug)
-                print "Error!: " . $e->getMessage() . "</br>";
+//            if ($debug)
+//                print "Error!: " . $e->getMessage() . "</br>";
             $errorMsg[] = "There was a problem with accepting your data; please contact us directly.";
         }
         // If the transaction was successful, give success message
         if ($dataEntered) {
-            if ($debug)
-                print "<p>data entered now prepare keys ";
+//            if ($debug)
+//                print "<p>data entered now prepare keys ";
             
 //#################################################################
             // create a key value for confirmation
@@ -219,10 +219,10 @@
             $key1 = sha1($dateSubmitted);
             $key2 = $primaryKey;
 
-            if ($debug)
-                print "<p>key 1: " . $key1;
-            if ($debug)
-                print "<p>key 2: " . $key2;
+//            if ($debug)
+//                print "<p>key 1: " . $key1;
+//            if ($debug)
+//                print "<p>key 2: " . $key2;
 
             //#################################################################
             //
