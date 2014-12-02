@@ -144,4 +144,40 @@
         }
     }
 }
-//            if ($debug)
+//#############################################################################
+//
+// SECTION 3 Display Form
+//
+?>
+<article id="main">
+    <?php
+//####################################
+//
+// SECTION 3a.
+//
+//
+//
+//
+// If its the first time coming to the form or there are errors we are going
+// to display the form.
+    if (isset($_POST["btnSubmit"]) AND empty($errorMsg)) { // closing of if marked with: end body submit
+        print "<h2>Your Request has ";
+        print "been processed.</h2>";
+    } else {
+              
+//####################################
+//
+// SECTION 3b Error Messages
+//
+// display any error messages before we print out the form
+        if ($errorMsg) {
+            print '<div id="errors">';
+            print "<ol>\n";
+            foreach ($errorMsg as $err) {
+                print "<li>" . $err . "</li>\n";
+            }
+            print "</ol>\n";
+            print '</div>';
+        
+    }
+    
