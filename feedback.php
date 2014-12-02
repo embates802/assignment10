@@ -42,7 +42,6 @@
     // in the order they appear on the form
     $feedback = "";
     $rating = 0;
-    $date = "";
     
     //%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
     //
@@ -52,7 +51,6 @@
     // in the order they appear in section 1c.
     $feedbackERROR = false;
     $ratingERROR = false;
-    $dateERROR = false;
     
     //%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
     //
@@ -73,7 +71,7 @@
     // remove any potential JavaScript or html code from users input on the
     // form. Note it is best to follow the same order as declared in section 1c.
         $feedback = filter_var($_POST["txtaFeedback"], FILTER_SANITIZE_STRING);
-        $date = filter_var($_POST["txtDate"], FILTER_SANITIZE_STRING);
+        $rating = htmlentities($_POST["radRating"], ENT_QUOTES, "UTF-8");
         
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     //
@@ -90,11 +88,6 @@
         if ($feedback == "") {
             $errorMsg[] = "Please enter your feedback below.";
             $feedbackERROR = true;
-        }
-        
-        if ($date == ""){
-            $errorMsg[] = "Please enter today's date.";
-            $dateERROR = true;
         }
  
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -115,8 +108,8 @@
         $dataEntered = false;
         try {
             $thisDatabase->db->beginTransaction();
-            $query = "INSERT INTO tblFeedback (fldFeedback, fldRating, fldDate) values (?, ?, ?)";
-            $data = array($feedback, $rating, $date);
+            $query = "INSERT INTO tblFeedback (fldFeedback, fldRating) values (?, ?)";
+            $data = array($feedback, $rating);
 //            if ($debug) {
 //                print "<p>sql " . $query;
 //                print"<p><pre>";
@@ -161,8 +154,8 @@
 // If its the first time coming to the form or there are errors we are going
 // to display the form.
     if (isset($_POST["btnSubmit"]) AND empty($errorMsg)) { // closing of if marked with: end body submit
-        print "<h2>Your Request has ";
-        print "been processed.</h2>";
+//        print "<h2>Your Request has ";
+//        print "been processed.</h2>";
     } else {
               
 //####################################
@@ -172,12 +165,63 @@
 // display any error messages before we print out the form
         if ($errorMsg) {
             print '<div id="errors">';
-            print "<ol>\n";
+            print "<ul>\n";
             foreach ($errorMsg as $err) {
                 print "<li>" . $err . "</li>\n";
             }
-            print "</ol>\n";
+            print "</ul>\n";
             print '</div>';
         
     }
+       
+//####################################
+//
+// SECTION 3c html Form
+//
+        /* Display the HTML form. note that the action is to this same page. $phpSelf
+          is defined in top.php
+          NOTE the line:
+          value="<?php print $email; ?>
+          this makes the form sticky by displaying either the initial default value (line 35)
+          or the value they typed in (line 84)
+          NOTE this line:
+          <?php if($emailERROR) print 'class="mistake"'; ?>
+          this prints out a css class so that we can highlight the background etc. to
+          make it stand out that a mistake happened here.
+         */
+        ?>
+        <form action="<?php print $phpSelf; ?>"
+              method="post"
+              id="frmRegister">
+            What do you think of this website? Please rate and leave your anonymous comments below.<p>
+                        <label for="txtaFeedback" class="required">Comments:
+                            <textarea name="txtaFeedback" id="txtaFeedback"
+                                      rows ="6" cols ="80"
+                                   onfocus="this.select()"
+                                   ></textarea>
+                        </label>
+                    <p>How helpful was this website?</p>
+                    <label><input type="radio" id="1" name="radRating"
+                                  value="1" tabindex="420" checked="checked"
+                                  <?php if($rating=="1") print 'checked';?>>1</label>
+                    <label><input type="radio" id="2" name="radRating"
+                                  value="2" tabindex="420" checked="checked"
+                                  <?php if($rating=="2") print 'checked';?>>2</label>
+                    <label><input type="radio" id="3" name="radRating"
+                                  value="3" tabindex="420" checked="checked"
+                                  <?php if($rating=="3") print 'checked';?>>3</label>
+                    <label><input type="radio" id="4" name="radRating"
+                                  value="4" tabindex="420" checked="checked"
+                                  <?php if($rating=="4") print 'checked';?>>4</label>
+                    <label><input type="radio" id="5" name="radRating"
+                                  value="5" tabindex="420" checked="checked"
+                                  <?php if($rating=="5") print 'checked';?>>5</label>
+                        <p>
+                    <input type="submit" id="btnSubmit" name="btnSubmit" value="Submit" tabindex="900" class="button">
+        </form>
+        <?php
+    } // end body submit
+    ?>
+</article>
+
     

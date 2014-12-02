@@ -272,11 +272,11 @@ require("../bin/mail-message.php");?>
 // display any error messages before we print out the form
         if ($errorMsg) {
             print '<div id="errors">';
-            print "<ol>\n";
+            print "<ul>\n";
             foreach ($errorMsg as $err) {
                 print "<li>" . $err . "</li>\n";
             }
-            print "</ol>\n";
+            print "</ul>\n";
             print '</div>';
         
     }
@@ -369,7 +369,7 @@ require("../bin/mail-message.php");?>
                                    onfocus ="this.select()"
                                    >
                         </label>
-                        <br>Please indicate what info you would like to learn more about:<br>
+                        <p>Please indicate what info you would like to learn more about:<br>
                         <label><input type="checkbox" id="chkFeatured" name="chkFeatured" value="featured"
                               <?php if ($featured) print'checked';?>
                                       tabindex="321" >Featured Cocktails</label><br>
