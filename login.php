@@ -4,7 +4,7 @@
 if($_SESSION["admin"]){ //This will log the user out, if logged in
     $_SESSION["admin"] = false;
 
-    header('Location: index.php');
+//    header('Location: index.php');
 }else{ //Otherwise, log in.
 
 
@@ -77,12 +77,12 @@ if (isset($_POST["btnLogin"])) {
             print "Error!: " . $e->getMessage() . "</br>";
         $errorMsg[] = "There was a problem with your entry.";
     }
-    print"<h1> The button was pressed</h1>";
+    print_r($errorMsg);
 } //If the button is pressed
 if (isset($_POST["btnLogin"]) AND empty($errorMsg)) { // closing of if marked with: end body submit
     if ($dataEntered) {
         print("Was I successful?");
-    header('Location: index.php');
+//    header('Location: index.php');
         print "<h2> THIS WORKED WELL </h2>";
     } //Close if dataEntered
 } else {
@@ -100,7 +100,7 @@ if (isset($_POST["btnLogin"]) AND empty($errorMsg)) { // closing of if marked wi
 // SECTION 3 Display Form
 //
     ?>
-    <form method="POST" action="index.php" method="post" id="frmLogin">
+    <form method="POST"  method="post" id="frmLogin">
             <section class="username">
                 <label for="txtUsername">Username: </label>
                 <input type="text" id="txtUsername" name="txtUsername"
