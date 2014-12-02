@@ -16,5 +16,5 @@
             <?php print("  |  ") ?>
             <a href="feedback.php">FEEDBACK</a>
             <?php print("  |  ") ?>
-            <a href="login.php">LOGIN</a>
+            <a href="login.php">ADMIN LOGIN</a>
     </nav>
