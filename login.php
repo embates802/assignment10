@@ -7,6 +7,13 @@ if($_SESSION["admin"]){ //This will log the user out, if logged in
 //    header('Location: index.php');
 }else{ //Otherwise, log in.
 
+        require_once('../bin/myDatabase.php');
+//    $searchQuery = $_GET['searchQuery']; //Get the SQL Statement that was requested
+    $dbUserName = get_current_user() . '_admin';
+    $whichPass = "a"; //flag for which one to use.
+    $dbName = strtoupper(get_current_user()) . '_BOTTOMS_UP';
+    
+    $thisDatabase = new myDatabase($dbUserName, $whichPass, $dbName);
 
 //Send the username to the database, and seee if the account as admin privs
 //if it does, set the session variable '$admin' to true. This will give the user access
@@ -63,6 +70,10 @@ if (isset($_POST["btnLogin"])) {
             $thisPassword = sha1($password);
             
             //If the passwords match, set the admin status for the page to true
+            print($username);
+            print($password);
+            print($userPassword);
+            print($userAdmin);
             if ($thisPassword == $userPassword) {
                 if ($userAdmin == 1) { //If the admin status is 1 (yes)
                     $_SESSION["admin"] = true;
