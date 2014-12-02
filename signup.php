@@ -1,7 +1,7 @@
 <?php require("head.php");
 require("../bin/mail-message.php");?>
 <body>
-    <h2>Sign Up For Our Newsletter</h2>
+    <h2>Bottoms Up! In Your Inbox</h2>
     <?php
     include("../bin/validation-functions.php");
 //    $debug = false;
@@ -302,8 +302,8 @@ require("../bin/mail-message.php");?>
         <form action="<?php print $phpSelf; ?>"
               method="post"
               id="frmRegister">
-            <p>Interested in hearing more from us? Sign up to receive the weekly Bottoms Up! Drink Specials newsletter.</p>
-            <p>Choose if you'd like to learn about our weekly featured cocktail, fun party-hosting tips, and/or drinking game ideas!</p>
+            Interested in hearing more from us? Sign up to receive the weekly Bottoms Up! Drink Specials newsletter.
+            <br>Choose if you'd like to learn more about our weekly featured cocktail, fun party-hosting tips, and/or drinking game ideas!
                     <p>Please enter your information below.</p>
                         <label for="txtEmail" class="required">Email:
                             <input type="text" id="txtEmail" name="txtEmail"
@@ -371,13 +371,13 @@ require("../bin/mail-message.php");?>
                                    onfocus ="this.select()"
                                    >
                         </label>
-                        <p>Please indicate what you would like to receive in your newsletter:</p>
+                        <br>Please indicate what info you would like to learn more about:<br>
                         <label><input type="checkbox" id="chkFeatured" name="chkFeatured" value="featured"
                               <?php if ($featured) print'checked';?>
-                              tabindex="321" >Featured Cocktails</label>
+                                      tabindex="321" >Featured Cocktails</label><br>
                 <label><input type="checkbox" id="chkTips" name="chkTips" value="tips"
                               <?php if ($tips) print'checked';?>
-                              tabindex="323" >Party-Hosting Tips</label>
+                              tabindex="323" >Party-Hosting Tips</label><br>
                   <label><input type="checkbox" id="chkLowCal" name="chkLowCal" value="lowCal"
                               <?php if ($lowCal) print'checked';?>
                               tabindex="323" >Drinking Games</label>
