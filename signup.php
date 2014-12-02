@@ -207,8 +207,6 @@ require("../bin/mail-message.php");?>
         // If the transaction was successful, give success message
         if ($dataEntered) {
 //            if ($debug)
-//                print "<p>data entered now prepare keys ";
-            
 
             //#################################################################
             //

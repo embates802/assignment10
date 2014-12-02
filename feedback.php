@@ -1,5 +1,4 @@
-<?php require("head.php");
-require("../bin/mail-message.php");?>
+<?php require("head.php");?>
 <body>
     <h2>We Love Feedback!</h2>
     <?php
@@ -62,12 +61,6 @@ require("../bin/mail-message.php");?>
     // create array to hold error messages filled (if any) in 2d displayed in 3c.
     $errorMsg = array();
     
-    // used for building email message to be sent and displayed
-    $mailed = false;
-    $messageA = "";
-    $messageB = "";
-    $messageC = "";
-    
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     //
     // SECTION: 2 Process for when the form is submitted
@@ -79,12 +72,76 @@ require("../bin/mail-message.php");?>
     // SECTION: 2b Sanitize (clean) data
     // remove any potential JavaScript or html code from users input on the
     // form. Note it is best to follow the same order as declared in section 1c.
-        $userID = filter_var($_POST["txtEmail"], FILTER_SANITIZE_EMAIL);
-        $firstName = filter_var($_POST["txtFirstName"], FILTER_SANITIZE_STRING);
-        $lastName = filter_var($_POST["txtLastName"], FILTER_SANITIZE_STRING);
-        $address = filter_var($_POST["txtAddress"], FILTER_SANITIZE_STRING);
-        $city = filter_var($_POST["txtCity"], FILTER_SANITIZE_STRING);
-        $state = filter_var($_POST["txtState"], FILTER_SANITIZE_STRING);
-        $zip = filter_var($_POST["txtZip"], FILTER_SANITIZE_STRING);
-        $phoneNumber = filter_var($_POST["txtPhoneNumber"], FILTER_SANITIZE_STRING);
+        $feedback = filter_var($_POST["txtaFeedback"], FILTER_SANITIZE_STRING);
+        $date = filter_var($_POST["txtDate"], FILTER_SANITIZE_STRING);
         
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    //
+    // SECTION: 2c Validation
+    //
+    // Validation section. Check each value for possible errors, empty or
+    // not what we expect. You will need an IF block for each element you will
+    // check (see above section 1c and 1d). The if blocks should also be in the
+    // order that the elements appear on your form so that the error messages
+    // will be in the order they appear. errorMsg will be displayed on the form
+    // see section 3b. The error flag ($emailERROR) will be used in section 3c.
+
+
+        if ($feedback == "") {
+            $errorMsg[] = "Please enter your feedback below.";
+            $feedbackERROR = true;
+        }
+        
+        if ($date == ""){
+            $errorMsg[] = "Please enter today's date.";
+            $dateERROR = true;
+        }
+ 
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    //
+    // SECTION: 2d Process Form - Passed Validation
+    //
+    // Process for when the form passes validation (the errorMsg array is empty)
+    //
+    if (!$errorMsg) {
+//        if ($debug)
+//            print "<p>Form is valid</p>";  
+   
+        //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        //
+        // SECTION: 2e Save Data
+        //
+        $primaryKey = "";
+        $dataEntered = false;
+        try {
+            $thisDatabase->db->beginTransaction();
+            $query = "INSERT INTO tblFeedback (fldFeedback, fldRating, fldDate) values (?, ?, ?)";
+            $data = array($feedback, $rating, $date);
+//            if ($debug) {
+//                print "<p>sql " . $query;
+//                print"<p><pre>";
+//                print_r($data);
+//                print"</pre></p>";
+//            }
+            $results = $thisDatabase->insert($query, $data);
+            $primaryKey = $thisDatabase->lastInsert();
+//            if ($debug)
+//                print "<p>pmk= " . $primaryKey;
+            // all sql statements are done so lets commit to our changes
+            $dataEntered = $thisDatabase->db->commit();
+            $dataEntered = true;
+//            if ($debug)
+//                print "<p>transaction complete ";
+        } catch (PDOExecption $e) {
+            $thisDatabase->db->rollback();
+//            if ($debug)
+//                print "Error!: " . $e->getMessage() . "</br>";
+            $errorMsg[] = "There was a problem with accepting your data; please contact us directly.";
+        }
+        // If the transaction was successful, give success message
+        if ($dataEntered) {
+            print("Thank you for your feedback.");
+        }
+    }
+}
+//            if ($debug)
