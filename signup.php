@@ -328,6 +328,14 @@
                                    onfocus="this.select()"
                                    >
                         </label>
+                        <label for="txtPhoneNumber" class="required">Phone Number:
+                            <input type="text" id="txtPhoneNumber" name="txtPhoneNumber"
+                                   value="<?php print $phoneNumber; ?>"
+                                   tabindex="120" maxlength="45"
+                                   <?php if ($phoneNumberERROR) print 'class="mistake"'; ?>
+                                   onfocus="this.select()"
+                                   >
+                        </label>                    
                         <br>
                         <label for="txtFirstName" class="required">First Name:
                             <input type="text" id="txtFirstName" name="txtFirstName"
