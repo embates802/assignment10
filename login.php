@@ -4,7 +4,7 @@
 if($_SESSION["admin"]){ //This will log the user out, if logged in
     $_SESSION["admin"] = false;
 
-//    header('Location: index.php');
+    header('Location: index.php');
 }else{ //Otherwise, log in.
 
         require_once('../bin/myDatabase.php');
@@ -51,8 +51,6 @@ if (isset($_POST["btnLogin"])) {
     //the user name that was taken from the form.
     try {
         if (empty($errorMsg)) {
-            print($username);
-            print($password);
             $data = array();
             $data[] = $username;
             $thisDatabase->db->beginTransaction();
@@ -64,17 +62,10 @@ if (isset($_POST["btnLogin"])) {
             $userPassword = $results[0]["fldPassword"];
             $userAdmin = $results[0]["fldAdmin"];
             $dataEntered = $thisDatabase->db->commit();
-            
-            
-            //Hash the password taken from the form
-            $thisPassword = sha1($password);
+
             
             //If the passwords match, set the admin status for the page to true
-            print($username);
-            print($password);
-            print($userPassword);
-            print($userAdmin);
-            if ($thisPassword == $userPassword) {
+            if ($password == $userPassword) {
                 if ($userAdmin == 1) { //If the admin status is 1 (yes)
                     $_SESSION["admin"] = true;
                 } else {
@@ -90,13 +81,10 @@ if (isset($_POST["btnLogin"])) {
             print "Error!: " . $e->getMessage() . "</br>";
         $errorMsg[] = "There was a problem with your entry.";
     }
-    print_r($errorMsg);
 } //If the button is pressed
 if (isset($_POST["btnLogin"]) AND empty($errorMsg)) { // closing of if marked with: end body submit
     if ($dataEntered) {
-        print("Was I successful?");
-//    header('Location: index.php');
-        print "<h2> THIS WORKED WELL </h2>";
+    header('Location: index.php');
     } //Close if dataEntered
 } else {
     if ($errorMsg) {

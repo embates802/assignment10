@@ -8,6 +8,7 @@
         <link href="style.css" type="text/css" rel="stylesheet" />
     </head>
     <nav>
+            <?php session_start();?>
             <a href="index.php">HOME</a>
             <?php print("  |  ") ?>
             <a href="about.php">ABOUT</a>
@@ -17,4 +18,19 @@
             <a href="feedback.php">FEEDBACK</a>
             <?php print("  |  ") ?>
             <a href="login.php">ADMIN LOGIN</a>
+            <?php if($_SESSION["admin"])
+            {
+                if (basename($_SERVER['PHP_SELF']) == "login.php")
+                {
+                    print('<a href="login.php">ADMIN LOG IN</a>');
+                }
+                else
+                {
+                    print('<a href="login.php">ADMIN LOG OUT</a>');
+                }
+                print("  |  ");
+                print('<a href="admin.php">MODIFY DATABASE</a>');
+            }
+            
+            
     </nav>
