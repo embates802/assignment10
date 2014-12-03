@@ -65,6 +65,7 @@ table.center{
 
 #adminAdmin thead th{
     font-weight: 300;
+    text-decoration: underline;
 }
 
 img.centered{
