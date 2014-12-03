@@ -17,7 +17,10 @@
             <?php print("  |  ") ?>
             <a href="feedback.php">FEEDBACK</a>
             <?php print("  |  ") ?>
-            <a href="login.php">ADMIN LOGIN</a>
+            <?php if (!$_SESSION["admin"])
+            {
+                print('<a href="login.php">ADMIN LOG IN</a>');
+            }?>
             <?php if($_SESSION["admin"])
             {
                 if (basename($_SERVER['PHP_SELF']) == "login.php")
@@ -31,6 +34,6 @@
                 print("  |  ");
                 print('<a href="admin.php">MODIFY DATABASE</a>');
             }
-            
+            ?>
             
     </nav>

@@ -2,9 +2,6 @@
 <body>
     <h1>What are you drinking tonight?</h1>
 <?php
-    if ($_SESSION["admin"]){
-        print("admin");
-    }
         
     $debug = false;
     error_reporting(E_All);

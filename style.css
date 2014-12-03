@@ -37,10 +37,6 @@ nav a:link {
     color: #27ae60;
 }
 
-nav a:hover {
-    color: #2ecc71;
-}
-
 nav a:visited{
     color: #27ae60;
 }
@@ -51,6 +47,14 @@ body {
     text-align: center;
     color: #f1c40f;
     font-size: 150%;
+}
+
+body a:link{
+    color: #27ae60;
+}
+
+body a:visited{
+    color: #27ae60;
 }
 
 img.centered{
